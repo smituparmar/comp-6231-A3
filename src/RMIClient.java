@@ -12,10 +12,11 @@ public class RMIClient {
 //            RemoteInputStream remoteInputStream = new RemoteInputStream(new FileInputStream("C:/Users/syp98/OneDrive/Desktop/sample.txt"));
             while(true){
                 int choice = scanner.nextInt();
+                scanner.nextLine();
                 switch (choice){
                     case 1:{
                         System.out.println("Please enter a filePath:");
-                        scanner.nextLine();
+
                         String fileName = scanner.nextLine();
                         try (
                                 InputStream inputStream = new BufferedInputStream(new FileInputStream(fileName));
@@ -39,7 +40,14 @@ public class RMIClient {
                         System.out.println(listOfFiles);
                         break;
                     }
-
+                    case 3:{
+                        System.out.println("Please enter filename you want to read");
+                        String fileName = scanner.nextLine();
+                        String data = remoteapi.downloadFile(fileName);
+                        System.out.println("File Data:");
+                        System.out.println(data);
+                        System.out.println("-------------WE ARE DONE---------------");
+                    }
                 }
 
             }

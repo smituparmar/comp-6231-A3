@@ -1,11 +1,7 @@
 import mpi.MPI;
 
-import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
 
 public final class FileRepositoryAPI implements APIInterface{
 
@@ -25,14 +21,13 @@ public final class FileRepositoryAPI implements APIInterface{
     @Override
     public String listFiles() throws RemoteException {
         char[] data = "send files/list".toCharArray();
+        byte[] resultData = new byte[1024];
         System.out.println("we are in list function");
-        RMIServer.MPIProxy.Sendrecv(data, 0, data.length, MPI.CHAR, 0, 0, data, 0, data.length, MPI.CHAR, 0, 2);
+        RMIServer.MPIProxy.Sendrecv(data, 0, data.length, MPI.CHAR, 0, 0, resultData, 0, resultData.length, MPI.BYTE, 0, 2);
 //        RMIServer.MPIProxy.Send(data, 0, data.length, MPI.CHAR, 0, 0);
         System.out.println("we got some nerves here");
-        for(int i=0;i< data.length;i++){
-            System.out.print((char)data[i]);
-        }
-        return String.valueOf(data);
+
+        return new String(resultData);
     }
 
     @Override
@@ -58,7 +53,13 @@ public final class FileRepositoryAPI implements APIInterface{
     }
 
     @Override
-    public void downloadFile(String url) throws RemoteException {
-
+    public String downloadFile(String url) throws RemoteException {
+        url += "/download";
+        char[] data = url.toCharArray();
+        byte[] resultData = new byte[1024000];
+        System.out.println("we are in download function");
+        RMIServer.MPIProxy.Sendrecv(data, 0, data.length, MPI.CHAR, 0, 0, resultData, 0, resultData.length, MPI.BYTE, 0, 4);
+//        RMIServer.MPIProxy.Send(data, 0, data.length, MPI.CHAR, 0, 0);
+        return new String(resultData).trim();
     }
 }

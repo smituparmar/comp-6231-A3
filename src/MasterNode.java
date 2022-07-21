@@ -69,9 +69,30 @@ public class MasterNode {
                         for(String file:fileList){
                             files += file+"\n";
                         }
-                        char[] fileListBytes = files.toCharArray();
-                        System.out.println("files List:"+files+" source: "+s.source);
-                        MPI.COMM_WORLD.Send(fileListBytes, 0, fileListBytes.length, MPI.CHAR, s.source , 2);
+                        byte[] fileListBytes = files.getBytes();
+                        System.out.println("files List:"+files+" source: "+s.source +" "+ fileListBytes.length);
+                        RMIServer.MPI_PROXY.Send(fileListBytes, 0, fileListBytes.length, MPI.BYTE, 0 , 2);
+                    }
+
+                    if(action.equals("download")){
+                        System.out.println("------------downloadMaster-------------");
+                        ArrayList<Integer> nodes = fileMap.get(fileName);
+                        String fileContent = "";
+                        System.out.println(fileMap);
+                        HashMap<Integer, Integer> count = new HashMap<>();
+                        for(int i=1;i<15;i++){
+                            count.put(i,0);
+                        }
+                        for(Integer node:nodes){
+                            String file = String.valueOf(fileNameArray);
+                            file+="/"+count.get(node);
+                            fileNameArray = file.toCharArray();
+                            MPI.COMM_WORLD.Send(fileNameArray, 0, fileNameArray.length, MPI.CHAR, node, 0);
+                            MPI.COMM_WORLD.Recv(data, 0, data.length, MPI.BYTE, node, 3);
+                            fileContent += new String(data);
+                        }
+                        byte[] fileListBytes = fileContent.getBytes();
+                        RMIServer.MPI_PROXY.Send(fileListBytes, 0, fileListBytes.length, MPI.BYTE, 0 , 4);
                     }
 
                 }
