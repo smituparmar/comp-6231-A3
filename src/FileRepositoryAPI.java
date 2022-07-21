@@ -23,9 +23,11 @@ public final class FileRepositoryAPI implements APIInterface{
     }
 
     @Override
-    public String list() throws RemoteException {
+    public String listFiles() throws RemoteException {
         char[] data = "send files/list".toCharArray();
-        RMIServer.MPIProxy.Sendrecv(data, 0, data.length, MPI.CHAR, 0, 0, data, 0, data.length, MPI.BYTE, 0, 5);
+        System.out.println("we are in list function");
+        RMIServer.MPIProxy.Sendrecv(data, 0, data.length, MPI.CHAR, 0, 0, data, 0, data.length, MPI.CHAR, 0, 2);
+//        RMIServer.MPIProxy.Send(data, 0, data.length, MPI.CHAR, 0, 0);
         System.out.println("we got some nerves here");
         for(int i=0;i< data.length;i++){
             System.out.print((char)data[i]);

@@ -34,7 +34,7 @@ public class RMIClient {
                         break;
                     }
                     case 2:{
-                        String listOfFiles = remoteapi.list();
+                        String listOfFiles = remoteapi.listFiles();
                         System.out.println("upload file List");
                         System.out.println(listOfFiles);
                         break;
