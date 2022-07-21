@@ -1,8 +1,9 @@
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.rmi.Remote;
 
-public class RemoteInputStream extends InputStream implements Remote {
+public class RemoteInputStream extends InputStream implements Remote, Serializable {
     private InputStream input;
 
     public RemoteInputStream(InputStream input) {

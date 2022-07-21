@@ -105,7 +105,7 @@ public class RMIServer {
             return invoke(() -> MPI.COMM_WORLD.Isend(buf, offset, len, datatype, dest, tag));
         }
 
-        public void Send(final Object buf, final int offset, final int len, final Datatype datatype, final int dest, final int tag) throws MPIException {
+        public static void Send(final Object buf, final int offset, final int len, final Datatype datatype, final int dest, final int tag) throws MPIException {
             invoke(() -> MPI.COMM_WORLD.Send(buf, offset, len, datatype, dest, tag));
         }
 
